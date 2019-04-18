@@ -1,9 +1,11 @@
-package com.example.socketchatapplication;
+package com.example.socketchatapplication.ui;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity {
+import com.example.socketchatapplication.R;
+
+public class MainActivity extends AppCompatActivity implements MainContractor.View {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

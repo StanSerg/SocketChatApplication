@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">SocketChatApplication</string>
+    <string name="btn_send">Send</string>
+    <string name="tv_user">Guest</string>
+    <string name="tv_message">Type here to chat</string>
+    <string name="tv_item">item</string>
 </resources>
