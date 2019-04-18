@@ -10,8 +10,6 @@ import java.net.URISyntaxException;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
-import io.socket.engineio.client.transports.Polling;
-import io.socket.engineio.client.transports.WebSocket;
 
 import static com.example.socketchatapplication.utils.Configuration.BASE_URL;
 import static com.example.socketchatapplication.utils.Configuration.KEY_USER_MESSAGE;
@@ -31,7 +29,6 @@ public class ChatManager {
     public ChatManager(String userName, ChatListener chatListener) {
         this.userName = userName;
         this.chatListener = chatListener;
-        this.initClientSocket();
     }
 
     private void initClientSocket() {
@@ -47,12 +44,11 @@ public class ChatManager {
     }
 
     public void subscribe() {
-        this.clientSocket.on(EVENT_CONNECT, new Emitter.Listener() {
-            @Override
-            public void call(Object... args) {
-                Log.i(TAG, "call: EVENT_CONNECT");
-                chatListener.onConnect();
-            }
+        this.initClientSocket();
+
+        this.clientSocket.on(EVENT_CONNECT, args -> {
+            Log.i(TAG, "call: EVENT_CONNECT");
+            chatListener.onConnect();
         });
         this.clientSocket.on(EVENT_DISCONNECT, args -> {
             Log.i(TAG, "call: EVENT_DISCONNECT");
@@ -70,8 +66,7 @@ public class ChatManager {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            // TODO: 18.04.2019 uncomment 
-//            if (!userName.equals(nickname))
+            if (!userName.equals(nickname))
                 chatListener.onNewMessage(nickname, message);
 
         });
@@ -96,7 +91,7 @@ public class ChatManager {
 
     public void sendMessage(String userName, String message) {
         this.userName = userName;
-        if(message.length() == 0) {
+        if (message.length() == 0) {
             Log.e(TAG, "sendMessage: message is empty");
             return;
         }

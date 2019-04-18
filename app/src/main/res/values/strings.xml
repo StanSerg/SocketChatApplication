@@ -3,5 +3,6 @@
     <string name="btn_send">Send</string>
     <string name="tv_user">Guest</string>
     <string name="tv_message">Type here to chat</string>
-    <string name="tv_item">item</string>
+    <string name="tv_item_user">user</string>
+    <string name="tv_item_message">message</string>
 </resources>

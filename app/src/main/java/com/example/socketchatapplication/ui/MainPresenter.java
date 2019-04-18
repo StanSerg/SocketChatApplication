@@ -27,24 +27,33 @@ public class MainPresenter implements MainContractor.Presenter, ChatListener {
     // chatListener methods
     @Override
     public void onOwnMessage(String userName, String message) {
-        Log.i(TAG, "onOwnMessage: " +userName + " ownMessage: " + message);
+        Log.i(TAG, "onOwnMessage: " + userName + " ownMessage: " + message);
+        this.addMessageToList(userName, message);
     }
 
     @Override
     public void onNewMessage(String userName, String message) {
-        Log.i(TAG, "onNewMessage: " +userName + " newMessage: " + message);
+        Log.i(TAG, "onNewMessage: " + userName + " newMessage: " + message);
+        this.addMessageToList(userName, message);
+    }
+
+    private void addMessageToList(String userName, String message) {
+        if (this.listMessages != null)
+            this.listMessages.add(new MessageModel(userName, message));
+        if (this.mainView != null)
+            this.mainView.setDataToView(this.listMessages);
     }
 
     @Override
     public void onConnect() {
         Log.i(TAG, "onConnect: ");
-        this.chatManager.sendMessage(this.userName, "Hi! My name is " + this.userName + " I am connected now!" );
+        this.chatManager.sendMessage(this.userName, "Hi! My name is " + this.userName + " I am connected now!");
     }
 
     @Override
     public void onDisconnect() {
         Log.i(TAG, "onDisconnect: ");
-        this.chatManager.sendMessage(this.userName, "My name is " + this.userName + " I am disconnected now!" );
+        this.chatManager.sendMessage(this.userName, "My name is " + this.userName + " I am disconnected now!");
     }
 
     @Override
