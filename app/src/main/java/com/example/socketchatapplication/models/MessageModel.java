@@ -2,20 +2,20 @@ package com.example.socketchatapplication.models;
 
 public class MessageModel {
 
-    private String userName;
+    private String user;
     private String message;
 
     public MessageModel(String userName, String message) {
-        this.userName = userName;
+        this.user = userName;
         this.message = message;
     }
 
     public String getUserName() {
-        return userName;
+        return user;
     }
 
     public void setUserName(String userName) {
-        this.userName = userName;
+        this.user = userName;
     }
 
     public String getMessage() {
