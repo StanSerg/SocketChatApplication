@@ -19,8 +19,8 @@
 
     </android.support.v7.widget.RecyclerView>
 
-    <EditText
-        android:id="@+id/etv_user"
+    <TextView
+        android:id="@+id/tv_user"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_middle"
@@ -40,7 +40,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/btn_send"
         app:layout_constraintEnd_toStartOf="@+id/btn_send"
         app:layout_constraintHorizontal_weight="3"
-        app:layout_constraintStart_toEndOf="@+id/etv_user"
+        app:layout_constraintStart_toEndOf="@+id/tv_user"
         app:layout_constraintTop_toTopOf="@+id/btn_send" />
 
     <Button
