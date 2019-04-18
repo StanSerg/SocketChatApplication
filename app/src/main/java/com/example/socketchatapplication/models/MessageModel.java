@@ -14,15 +14,7 @@ public class MessageModel {
         return user;
     }
 
-    public void setUserName(String userName) {
-        this.user = userName;
-    }
-
     public String getMessage() {
         return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 }

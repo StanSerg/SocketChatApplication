@@ -17,8 +17,7 @@ public class MainPresenter implements MainContractor.Presenter, ChatListener {
     private ChatManager chatManager;
     private String userName;
 
-    public MainPresenter(MainContractor.View mainView, String userName) {
-        this.mainView = mainView;
+    public MainPresenter(String userName) {
         this.userName = userName;
         this.listMessages = new ArrayList<>();
         this.chatManager = new ChatManager(this.userName, this);
@@ -38,22 +37,22 @@ public class MainPresenter implements MainContractor.Presenter, ChatListener {
     }
 
     private void addMessageToList(String userName, String message) {
-        if (this.listMessages != null)
-            this.listMessages.add(new MessageModel(userName, message));
-        if (this.mainView != null)
-            this.mainView.setDataToView(this.listMessages);
+        if (listMessages != null)
+            listMessages.add(new MessageModel(userName, message));
+        if (mainView != null)
+            mainView.setDataToView(listMessages);
     }
 
     @Override
     public void onConnect() {
         Log.i(TAG, "onConnect: ");
-        this.chatManager.sendMessage(this.userName, "Hi! My name is " + this.userName + " I am connected now!");
+        chatManager.sendMessage(userName, "Hi! My name is " + userName + " I am connected now!");
     }
 
     @Override
     public void onDisconnect() {
         Log.i(TAG, "onDisconnect: ");
-        this.chatManager.sendMessage(this.userName, "My name is " + this.userName + " I am disconnected now!");
+        chatManager.sendMessage(userName, "My name is " + userName + " I am disconnected now!");
     }
 
     @Override
@@ -70,23 +69,21 @@ public class MainPresenter implements MainContractor.Presenter, ChatListener {
     @Override
     public void attachView(MainContractor.View view) {
         Log.i(TAG, "attachView: ");
-        this.mainView = view;
-        this.mainView.setDataToView(this.listMessages);
-        if (this.chatManager != null)
-            this.chatManager.subscribe();
+        mainView = view;
+        mainView.setDataToView(listMessages);
+        if (chatManager != null)
+            chatManager.subscribe();
     }
 
     @Override
     public void detachView() {
         Log.i(TAG, "detachView: ");
-        if (this.chatManager != null)
-            this.chatManager.unsubscribe();
-
-
+        if (chatManager != null)
+            chatManager.unsubscribe();
     }
 
     @Override
     public void sendOwnMessage(String message) {
-        this.chatManager.sendMessage(this.userName, message);
+        chatManager.sendMessage(userName, message);
     }
 }

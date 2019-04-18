@@ -9,7 +9,6 @@ import java.net.URISyntaxException;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
-import io.socket.emitter.Emitter;
 
 import static com.example.socketchatapplication.utils.Configuration.BASE_URL;
 import static com.example.socketchatapplication.utils.Configuration.KEY_USER_MESSAGE;
@@ -33,9 +32,9 @@ public class ChatManager {
 
     private void initClientSocket() {
         try {
-            this.clientSocket = IO.socket(BASE_URL, new IO.Options());
-            this.clientSocket.connect();
-            this.clientSocket.emit("join", userName);
+            clientSocket = IO.socket(BASE_URL, new IO.Options());
+            clientSocket.connect();
+            clientSocket.emit("join", userName);
             Log.i(TAG, "initClientSocket: ");
         } catch (URISyntaxException e) {
             Log.e(TAG, "initClientSocket: ERROR");
@@ -44,17 +43,17 @@ public class ChatManager {
     }
 
     public void subscribe() {
-        this.initClientSocket();
+        initClientSocket();
 
-        this.clientSocket.on(EVENT_CONNECT, args -> {
+        clientSocket.on(EVENT_CONNECT, args -> {
             Log.i(TAG, "call: EVENT_CONNECT");
             chatListener.onConnect();
         });
-        this.clientSocket.on(EVENT_DISCONNECT, args -> {
+        clientSocket.on(EVENT_DISCONNECT, args -> {
             Log.i(TAG, "call: EVENT_DISCONNECT");
             chatListener.onDisconnect();
         });
-        this.clientSocket.on(EVENT_MESSAGE, args -> {
+        clientSocket.on(EVENT_MESSAGE, args -> {
             Log.i(TAG, "call: EVENT_MESSAGE");
             JSONObject data = (JSONObject) args[0];
             String nickname = "";
@@ -70,12 +69,12 @@ public class ChatManager {
                 chatListener.onNewMessage(nickname, message);
 
         });
-        this.clientSocket.on(EVENT_CONNECT_ERROR, args -> {
+        clientSocket.on(EVENT_CONNECT_ERROR, args -> {
             Log.i(TAG, "call: EVENT_CONNECT_ERROR");
             Exception exception = (Exception) args[0];
             chatListener.onConnectError(exception.getMessage());
         });
-        this.clientSocket.on(EVENT_CONNECT_TIMEOUT, args -> {
+        clientSocket.on(EVENT_CONNECT_TIMEOUT, args -> {
             Log.i(TAG, "call: EVENT_CONNECT_TIMEOUT");
             chatListener.onConnectTimeout();
         });
@@ -83,8 +82,8 @@ public class ChatManager {
     }
 
     public void unsubscribe() {
-        if (this.clientSocket != null) {
-            this.clientSocket.disconnect();
+        if (clientSocket != null) {
+            clientSocket.disconnect();
             Log.i(TAG, "unsubscribe: ");
         }
     }
@@ -102,7 +101,7 @@ public class ChatManager {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        this.clientSocket.emit(EVENT_MESSAGE, messageJsonObject);
-        this.chatListener.onOwnMessage(this.userName, message);
+        clientSocket.emit(EVENT_MESSAGE, messageJsonObject);
+        chatListener.onOwnMessage(this.userName, message);
     }
 }

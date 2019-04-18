@@ -9,7 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.socketchatapplication.R;
-import com.example.socketchatapplication.adapters.MessagesAdapter;
+import com.example.socketchatapplication.ui.adapters.MessagesAdapter;
 import com.example.socketchatapplication.models.MessageModel;
 
 import java.util.ArrayList;
@@ -32,53 +32,53 @@ public class MainActivity extends AppCompatActivity implements MainContractor.Vi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        this.initViewElements();
-        this.attachPresenter();
-        this.initListeners();
-        this.initAdapters();
+        initViewElements();
+        attachPresenter();
+        initListeners();
+        initAdapters();
     }
 
 
     private void initViewElements() {
-        this.tvUserName = (TextView) findViewById(R.id.tv_user);
-        this.etvOwnMessage = (EditText) findViewById(R.id.etv_msg);
-        this.btnSendOwnMessage = (Button) findViewById(R.id.btn_send);
-        this.rvChat = (RecyclerView) findViewById(R.id.rv_chat);
+        tvUserName = findViewById(R.id.tv_user);
+        etvOwnMessage = findViewById(R.id.etv_msg);
+        btnSendOwnMessage = findViewById(R.id.btn_send);
+        rvChat = findViewById(R.id.rv_chat);
     }
 
     private void attachPresenter() {
-        this.userName = String.valueOf(this.tvUserName.getText());
-        this.presenter = (MainContractor.Presenter) getLastCustomNonConfigurationInstance();
-        if (this.presenter == null) {
-            this.presenter = new MainPresenter(this, this.userName);
+        userName = tvUserName.getText().toString();
+        presenter = (MainContractor.Presenter) getLastCustomNonConfigurationInstance();
+        if (presenter == null) {
+            presenter = new MainPresenter(userName);
         }
-        this.presenter.attachView(this);
+        presenter.attachView(this);
     }
 
     private void initListeners() {
-        this.btnSendOwnMessage.setOnClickListener(v -> {
-            if (this.presenter != null && this.etvOwnMessage != null) {
-                this.presenter.sendOwnMessage(this.etvOwnMessage.getText().toString());
-                this.etvOwnMessage.setText("");
+        btnSendOwnMessage.setOnClickListener(v -> {
+            if (presenter != null && etvOwnMessage != null) {
+                presenter.sendOwnMessage(etvOwnMessage.getText().toString());
+                etvOwnMessage.setText("");
             }
         });
     }
 
     private void initAdapters() {
-        this.messagesAdapter = new MessagesAdapter(new ArrayList<>());
-        this.linearLayoutManager = new LinearLayoutManager(this);
-        this.rvChat.setLayoutManager(this.linearLayoutManager);
-        this.rvChat.setAdapter(this.messagesAdapter);
+        messagesAdapter = new MessagesAdapter(new ArrayList<>());
+        linearLayoutManager = new LinearLayoutManager(this);
+        rvChat.setLayoutManager(linearLayoutManager);
+        rvChat.setAdapter(messagesAdapter);
     }
 
     @Override
     public Object onRetainCustomNonConfigurationInstance() {
-        return this.presenter;
+        return presenter;
     }
 
     @Override
     protected void onDestroy() {
-        this.presenter.detachView();
+        presenter.detachView();
         super.onDestroy();
     }
 
@@ -87,9 +87,9 @@ public class MainActivity extends AppCompatActivity implements MainContractor.Vi
     @Override
     public void setDataToView(List<MessageModel> listMessages) {
         runOnUiThread(() -> {
-            if (this.messagesAdapter != null) {
-                this.messagesAdapter.setMessageList(listMessages);
-                this.linearLayoutManager.scrollToPosition(listMessages.size() - 1);
+            if (messagesAdapter != null) {
+                messagesAdapter.setMessageList(listMessages);
+                linearLayoutManager.scrollToPosition(listMessages.size() - 1);
             }
         });
     }

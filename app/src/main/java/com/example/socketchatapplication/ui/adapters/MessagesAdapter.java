@@ -1,4 +1,4 @@
-package com.example.socketchatapplication.adapters;
+package com.example.socketchatapplication.ui.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -21,7 +21,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
 
         public MessageViewHolder(View view) {
             super(view);
-            this.tvMessage = (TextView) view.findViewById(R.id.tv_chat_item_message);
+            tvMessage = view.findViewById(R.id.tv_chat_item_message);
         }
     }
 
@@ -31,7 +31,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
 
     @Override
     public int getItemCount() {
-        return this.messageList.size();
+        return messageList.size();
     }
 
     @Override
@@ -43,10 +43,10 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
 
     @Override
     public void onBindViewHolder(final MessagesAdapter.MessageViewHolder holder, final int position) {
-        MessageModel messageModel = this.messageList.get(position);
+        MessageModel messageModel = messageList.get(position);
         String tmp = messageModel.getUserName();
         String nickname = (tmp.equals("Guest") || tmp.equals("")) ? "" : tmp;
-        if (nickname.equals("")) {
+        if (nickname.isEmpty()) {
             holder.tvMessage.setGravity(Gravity.END);
             holder.tvMessage.setText(messageModel.getMessage());
         }
